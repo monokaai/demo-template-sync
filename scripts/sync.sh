@@ -98,8 +98,9 @@ main() {
 
   # git-xargs の実行
   echo "[sync.sh] Running git-xargs..."
-  # GitHub Raw URL からスクリプトをダウンロードして実行
-  local apply_script_url="https://raw.githubusercontent.com/${SOURCE_REPO}/main/scripts/apply.sh"
+  # GitHub Raw URL からスクリプトをダウンロードして実行（キャッシュ回避のためタイムスタンプ追加）
+  local timestamp=$(date +%s)
+  local apply_script_url="https://raw.githubusercontent.com/${SOURCE_REPO}/main/scripts/apply.sh?t=${timestamp}"
   git-xargs "${GIT_XARGS_FLAGS[@]}" bash -c "curl -sL ${apply_script_url} | bash"
 
   echo "[sync.sh] ============================================="
