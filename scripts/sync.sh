@@ -18,7 +18,7 @@ GIT_XARGS_FLAGS=(
   --branch-name "$BRANCH_NAME"
   --commit-message "$COMMIT_MESSAGE"
   --pull-request-title "$PR_TITLE"
-  --pull-request-body "$PR_BODY"
+  --pull-request-description "$PR_BODY"
   --repos "$REPOS_FILE"
   --draft
   --seconds-between-prs 2
