@@ -1,0 +1,25 @@
+# ═══════════════════════════════════════════════════════════════════════
+# 配布対象ファイル定義
+# ═══════════════════════════════════════════════════════════════════════
+# フォーマット: [パターン:]ファイルパス
+# パターンなし = 全リポジトリに配布
+
+# ===== 全リポジトリ =====
+# 共通ワークフロー
+.github/workflows/ci.yml
+.github/workflows/lint.yml
+
+# Lint/Format設定
+.eslintrc.json
+.prettierrc
+
+# TypeScript設定
+tsconfig.json
+
+# ===== パターンマッチング例 =====
+# frontend-* 系リポジトリにのみ配布
+# frontend-*:.github/workflows/deploy-preview.yml
+
+# ===== 特定リポジトリ =====
+# demo-template-sync-a にのみ配布
+# demo-template-sync-a:config/custom-a.json

@@ -1,0 +1,3 @@
+monokaai/demo-template-sync-a
+monokaai/demo-template-sync-b
+monokaai/demo-template-sync-c

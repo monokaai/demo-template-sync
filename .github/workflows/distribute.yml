@@ -1,0 +1,76 @@
+name: Distribute Common Config
+
+on:
+  # スケジュール実行: 毎週月曜 2:00 JST
+  schedule:
+    - cron: '0 2 * * 1'
+
+  # 手動実行
+  workflow_dispatch:
+    inputs:
+      batch:
+        description: 'ターゲットバッチ'
+        required: false
+        default: 'test'
+        type: choice
+        options:
+          - test
+          - production
+      dry_run:
+        description: 'Dry run'
+        type: boolean
+        default: false
+
+# タスクが完了するのを防ぐため、同時に実行されないようにする
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  distribute:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Generate GitHub App token
+        id: generate_token
+        uses: tibdex/github-app-token@v2
+        with:
+          app_id: ${{ secrets.APP_ID }}
+          private_key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - name: Checkout common-config
+        uses: actions/checkout@v4
+        with:
+          token: ${{ steps.generate_token.outputs.token }}
+
+      - name: Install git-xargs
+        run: |
+          TEMP_DIR=$(mktemp -d)
+          cd "$TEMP_DIR"
+
+          # 最新リリースを取得
+          LATEST_RELEASE=$(curl -s https://api.github.com/repos/gruntwork-io/git-xargs/releases/latest | grep '"tag_name":' | sed -E 's/.*"tag_name": "v([^"]+)".*/\1/')
+          BINARY_NAME="git-xargs_linux_amd64"
+          DOWNLOAD_URL="https://github.com/gruntwork-io/git-xargs/releases/download/v${LATEST_RELEASE}/${BINARY_NAME}"
+
+          echo "Installing git-xargs v${LATEST_RELEASE}..."
+          curl -LO "$DOWNLOAD_URL"
+          chmod +x "$BINARY_NAME"
+          sudo mv "$BINARY_NAME" /usr/local/bin/git-xargs
+
+          git-xargs --version
+
+          cd -
+          rm -rf "$TEMP_DIR"
+
+      - name: Distribute config
+        env:
+          GITHUB_OAUTH_TOKEN: ${{ steps.generate_token.outputs.token }}
+          REPOS_FILE: repos/${{ inputs.batch || 'test' }}.txt
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
+        run: |
+          ./scripts/sync.sh
