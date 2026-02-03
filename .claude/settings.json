@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      // Git operations
+      "Bash(git:*)",
+      "Bash(gh:*)",
+      "Bash(openspec:*)",
+      "Bash(npx openspec:*)",
+
+      // File operations for exploration
+      "Read",
+      "Glob",
+      "Grep",
+
+      // Web research tools (for comparing actions-template-sync vs git-xargs)
+      "WebSearch",
+      "mcp__web_reader__webReader",
+      "mcp__firecrawl__firecrawl_search",
+      "mcp__firecrawl__firecrawl_scrape",
+
+      // Documentation writing (OpenSpec artifacts, not implementation)
+      "Write(openspec/**/*)",
+      "Write(.claude/**/*)",
+      "Edit(openspec/**/*)",
+      "Edit(.claude/**/*)",
+
+      // Todo tracking for exploration
+      "TodoWrite"
+    ],
+    "deny": [
+      "Bash(gh repo delete:*)",
+      "Bash(rm -rf *)",
+      "Bash(git rm:*)"
+    ],
+    "ask": [
+      "Bash(git push:*)"
+    ]
+  }
+}
