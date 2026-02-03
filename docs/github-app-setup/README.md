@@ -12,13 +12,15 @@
 2. 以下のURLにアクセス: https://github.com/settings/apps
 3. 「New GitHub App」ボタンをクリック
 
-### 1.2 基本信息
+### 1.2 Basic Information
 
-| 項目 | 設定値 |
-|------|--------|
-| **GitHub App name** | `template-sync-app` （任意の名前） |
-| **Homepage URL** | `https://github.com/monokaai/demo-template-sync` |
-| **Description** | `Template sync system for distributing common config files` |
+GitHub App 作成画面の「Basic information」セクションに入力する項目です：
+
+| 項目 | 説明 | 設定値 |
+| :--- | :--- | :--- |
+| **GitHub App name** | GitHub App の識別名。Organization内で一意である必要があります。 | `template-sync-app` （任意の名前） |
+| **Homepage URL** | このアプリに関連付けるWebページのURL。通常はリポジトリのURLを指定します。 | `https://github.com/monokaai/demo-template-sync` |
+| **Description** | GitHub App の用途を説明する短文。Organizationの他のメンバーに何のためのアプリか分かるように書きます。 | `Template sync system for distributing common config files` |
 
 ### 1.3 権限の設定
 
