@@ -37,6 +37,8 @@ GitHub App 作成画面の「Basic information」セクションに入力する�
 
 ### 1.4 Webhook の設定
 
+- **Webhook URL**: 空欄でOK（このシステムでは使用しない）
+  - Webhook URL は外部システムからこのアプリに通知を送るためのURLですが、このシステムではGitHub Actionsから呼び出すため不要です
 - **Active**: チェックを外す（このシステムでは使用しない）
 
 ### 1.5 作成
