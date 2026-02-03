@@ -124,9 +124,33 @@ GitHub App 作成画面の「Basic information」セクションに入力する�
 
 GitHub Actions が正常に動作するかテスト実行します：
 
+#### 方法1: GitHub CLI を使用する（推奨・最も簡単）
+
 ```bash
-# ローカルでテスト（GitHub App トークンが必要）
-export GITHUB_OAUTH_TOKEN=<GitHub App トークン>
+# GitHub CLI でトークンを取得（パスワード入力が必要）
+export GITHUB_OAUTH_TOKEN=$(gh auth token)
+
+# テスト実行
+./scripts/sync.sh
+```
+
+**注意**: `gh auth token` 実行時に GitHub パスワードまたは認証コードの入力を求められます。
+
+#### 方法2: GitHub App トークンを使用する
+
+GitHub App の本来の権限でテストする場合：
+
+```bash
+# Private Key を配置
+cp /path/to/downloaded/private-key.pem .github-app-private-key.pem
+
+# GitHub App トークン生成スクリプトを実行
+APP_ID=<your-app-id> ./scripts/get-app-token.sh
+
+# 出力された export コマンドをコピー&ペースト
+export GITHUB_OAUTH_TOKEN=ghs_...
+
+# テスト実行
 ./scripts/sync.sh
 ```
 

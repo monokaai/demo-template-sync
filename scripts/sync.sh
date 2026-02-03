@@ -44,10 +44,25 @@ install_git_xargs() {
 
     # 最新リリースを取得
     LATEST_RELEASE=$(curl -s https://api.github.com/repos/gruntwork-io/git-xargs/releases/latest | grep '"tag_name":' | sed -E 's/.*"tag_name": "v([^"]+)".*/\1/')
-    BINARY_NAME="git-xargs_linux_amd64"
+
+    # OS に応じたバイナリ名を設定
+    OS_TYPE=$(uname -s)
+    case "$OS_TYPE" in
+      Darwin)
+        BINARY_NAME="git-xargs_darwin_amd64"
+        ;;
+      Linux)
+        BINARY_NAME="git-xargs_linux_amd64"
+        ;;
+      *)
+        echo "[sync.sh] ERROR: Unsupported OS: $OS_TYPE" >&2
+        exit 1
+        ;;
+    esac
+
     DOWNLOAD_URL="https://github.com/gruntwork-io/git-xargs/releases/download/v${LATEST_RELEASE}/${BINARY_NAME}"
 
-    echo "[sync.sh] Downloading git-xargs v${LATEST_RELEASE}..."
+    echo "[sync.sh] Downloading git-xargs v${LATEST_RELEASE} for ${OS_TYPE}..."
     curl -LO "$DOWNLOAD_URL"
     chmod +x "$BINARY_NAME"
     sudo mv "$BINARY_NAME" /usr/local/bin/git-xargs
