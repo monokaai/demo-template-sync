@@ -15,6 +15,7 @@ REPOS_FILE="${REPOS_FILE:-repos/test.txt}"
 
 # git-xargs オプション
 GIT_XARGS_FLAGS=(
+  --loglevel debug
   --branch-name "$BRANCH_NAME"
   --commit-message "$COMMIT_MESSAGE"
   --pull-request-title "$PR_TITLE"
@@ -97,7 +98,9 @@ main() {
 
   # git-xargs の実行
   echo "[sync.sh] Running git-xargs..."
-  git-xargs "${GIT_XARGS_FLAGS[@]}" ./scripts/apply.sh
+  # GitHub Raw URL からスクリプトをダウンロードして実行
+  local apply_script_url="https://raw.githubusercontent.com/${SOURCE_REPO}/main/scripts/apply.sh"
+  git-xargs "${GIT_XARGS_FLAGS[@]}" bash -c "curl -sL ${apply_script_url} | bash"
 
   echo "[sync.sh] ============================================="
   echo "[sync.sh] ✓ Complete!"
