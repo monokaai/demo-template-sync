@@ -5,17 +5,17 @@ set -euo pipefail
 SOURCE_REPO="${SOURCE_REPO:-monokaai/demo-template-sync}"
 SOURCE_DIR="/tmp/common-config-source-$$"
 
-# Git 認証を設定（GITHUB_OAUTH_TOKEN があれば使用）
+# Git clone 用 URL（認証付き）
 if [[ -n "${GITHUB_OAUTH_TOKEN:-}" ]]; then
-  # Git credential helper を設定
-  git config --global credential.helper store
-  echo "https://x-access-token:${GITHUB_OAUTH_TOKEN}@github.com" > ~/.git-credentials
+  SOURCE_URL="https://x-access-token:${GITHUB_OAUTH_TOKEN}@github.com/${SOURCE_REPO}.git"
+else
+  SOURCE_URL="https://github.com/${SOURCE_REPO}.git"
 fi
 
 # 配布元リポジトリをクローン
 if [[ ! -d "$SOURCE_DIR" ]]; then
   echo "[apply.sh] Cloning source repository: ${SOURCE_REPO}"
-  git clone --depth 1 "https://github.com/${SOURCE_REPO}.git" "$SOURCE_DIR"
+  git clone --depth 1 "$SOURCE_URL" "$SOURCE_DIR"
 else
   echo "[apply.sh] Using cached source repository: ${SOURCE_DIR}"
 fi
