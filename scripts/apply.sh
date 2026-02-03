@@ -53,10 +53,10 @@ while IFS= read -r line; do
         mkdir -p "$(dirname "$file")"
         cp "$SOURCE_FILE" "$file"
         echo "[apply.sh] ✓ Copied: $file (pattern: $pattern)"
-        ((COPIED_COUNT++))
+        ((COPIED_COUNT++)) || true
       else
         echo "[apply.sh] ⚠ Skipped: $file (not found in source, pattern: $pattern)" >&2
-        ((SKIPPED_COUNT++))
+        ((SKIPPED_COUNT++)) || true
       fi
     fi
   else
@@ -66,10 +66,10 @@ while IFS= read -r line; do
       mkdir -p "$(dirname "$line")"
       cp "$SOURCE_FILE" "$line"
       echo "[apply.sh] ✓ Copied: $line (default)"
-      ((COPIED_COUNT++))
+      ((COPIED_COUNT++)) || true
     else
       echo "[apply.sh] ⚠ Skipped: $line (not found in source)" >&2
-      ((SKIPPED_COUNT++))
+      ((SKIPPED_COUNT++)) || true
     fi
   fi
 done < "$INCLUDES_FILE"
